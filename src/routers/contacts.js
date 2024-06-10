@@ -27,14 +27,14 @@ contactsRouter.get(
 
 contactsRouter.post(
   '/contacts',
-  ctrlWrapper(postContactController),
   validateBody(createContactSchema),
+  ctrlWrapper(postContactController),
 );
 
 contactsRouter.patch(
   '/contacts/:contactId',
-  ctrlWrapper(patchContactController),
   validateBody(updateContactSchema),
+  ctrlWrapper(patchContactController),
 );
 
 contactsRouter.delete(

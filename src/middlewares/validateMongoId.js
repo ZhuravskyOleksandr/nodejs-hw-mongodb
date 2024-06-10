@@ -13,4 +13,6 @@ export default function validateMongoId(req, res, next) {
     );
     return;
   }
+
+  next();
 }

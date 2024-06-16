@@ -3,7 +3,7 @@ import ctrlWrapper from '../utils/ctrlWrapper.js';
 import {
   getAllContactsController,
   getContactByIdController,
-  postContactController,
+  createContactController,
   patchContactController,
   deleteContactController,
 } from '../controllers/contacts.js';
@@ -13,33 +13,30 @@ import {
   createContactSchema,
   updateContactSchema,
 } from '../validation/schemas/contacts.js';
+import { authenticate } from '../middlewares/authenticate.js';
 
 const contactsRouter = Router();
 
-contactsRouter.use('/contacts/:contactId', validateMongoId);
+contactsRouter.use('/:contactId', validateMongoId);
 
-contactsRouter.get('/contacts', ctrlWrapper(getAllContactsController));
+contactsRouter.use('/', authenticate);
 
-contactsRouter.get(
-  '/contacts/:contactId',
-  ctrlWrapper(getContactByIdController),
-);
+contactsRouter.get('', ctrlWrapper(getAllContactsController));
+
+contactsRouter.get('/:contactId', ctrlWrapper(getContactByIdController));
 
 contactsRouter.post(
-  '/contacts',
+  '',
   validateBody(createContactSchema),
-  ctrlWrapper(postContactController),
+  ctrlWrapper(createContactController),
 );
 
 contactsRouter.patch(
-  '/contacts/:contactId',
+  '/:contactId',
   validateBody(updateContactSchema),
   ctrlWrapper(patchContactController),
 );
 
-contactsRouter.delete(
-  '/contacts/:contactId',
-  ctrlWrapper(deleteContactController),
-);
+contactsRouter.delete('/:contactId', ctrlWrapper(deleteContactController));
 
 export default contactsRouter;

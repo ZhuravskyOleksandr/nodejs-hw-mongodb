@@ -1,4 +1,4 @@
-import { ContactsCollection } from '../db/Contact.js';
+import { ContactsCollection } from '../db/models/Contact.js';
 import calculatePaginationData from '../utils/calculatePaginationData.js';
 import { SORT_ORDER } from '../constants/sortOrder.js';
 
@@ -9,6 +9,7 @@ export async function getAllContacts({
   sortOrder = SORT_ORDER.ASC,
   type,
   isFavourite,
+  userId,
 }) {
   const limit = perPage;
   const skip = (page - 1) * perPage;
@@ -19,10 +20,13 @@ export async function getAllContacts({
     contactsList.where('contactType').equals(type);
   }
 
-  if (isFavourite) {
+  if (typeof isFavourite === 'boolean') {
     contactsList.where('isFavourite').equals(isFavourite);
   }
 
+  if (userId) {
+    contactsList.where('userId').equals(userId);
+  }
   const [contantsCount, contacts] = await Promise.all([
     ContactsCollection.find().merge(contactsList).countDocuments(),
     contactsList
@@ -40,17 +44,17 @@ export async function getAllContacts({
   };
 }
 
-export async function getContactById(contactId) {
-  return await ContactsCollection.findById(contactId);
+export async function getContactById(contactId, userId) {
+  return await ContactsCollection.findOne({ _id: contactId, userId });
 }
 
 export async function createContact(payload) {
   return await ContactsCollection.create(payload);
 }
 
-export async function updateContact(contactId, payload, options = {}) {
-  const rawResult = await ContactsCollection.findByIdAndUpdate(
-    contactId,
+export async function updateContact(contactId, userId, payload, options = {}) {
+  const rawResult = await ContactsCollection.findOneAndUpdate(
+    { _id: contactId, userId },
     payload,
     {
       new: true,
@@ -67,6 +71,6 @@ export async function updateContact(contactId, payload, options = {}) {
   };
 }
 
-export async function deleteContact(contactId) {
-  return await ContactsCollection.findByIdAndDelete(contactId);
+export async function deleteContact(contactId, userId) {
+  return await ContactsCollection.findOneAndDelete({ _id: contactId, userId });
 }

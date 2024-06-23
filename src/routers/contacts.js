@@ -13,7 +13,8 @@ import {
   createContactSchema,
   updateContactSchema,
 } from '../validation/schemas/contacts.js';
-import { authenticate } from '../middlewares/authenticate.js';
+import authenticate from '../middlewares/authenticate.js';
+import { uploadPhoto } from '../middlewares/uploadPhoto.js';
 
 const contactsRouter = Router();
 
@@ -27,12 +28,14 @@ contactsRouter.get('/:contactId', ctrlWrapper(getContactByIdController));
 
 contactsRouter.post(
   '',
+  uploadPhoto.single('photo'),
   validateBody(createContactSchema),
   ctrlWrapper(createContactController),
 );
 
 contactsRouter.patch(
   '/:contactId',
+  uploadPhoto.single('photo'),
   validateBody(updateContactSchema),
   ctrlWrapper(patchContactController),
 );

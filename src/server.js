@@ -7,6 +7,8 @@ import rootRouter from './routers/index.js';
 import notFoundHandler from './middlewares/notFoundHandler.js';
 import errorHandler from './middlewares/errorHandler.js';
 import cookieParser from 'cookie-parser';
+import { UPLOADS_DIR } from './constants/index.js';
+import removeFileIfExists from './middlewares/removeFileIfExists.js';
 
 export default function setupServer() {
   const PORT = Number(env(ENV_VARS.PORT, 3000));
@@ -26,9 +28,13 @@ export default function setupServer() {
 
   app.use(express.json());
 
+  app.use('/uploads', express.static(UPLOADS_DIR));
+
   app.use(rootRouter);
 
   app.use('*', notFoundHandler);
+
+  app.use(removeFileIfExists);
 
   app.use(errorHandler);
 

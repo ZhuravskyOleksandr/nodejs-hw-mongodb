@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import { FIFTEEN_MINUTES, THIRTY_DAYS } from '../constants/index.js';
 
-export function generateTokens() {
+export default function generateTokens() {
   return {
     accessToken: crypto.randomBytes(30).toString('base64'),
     refreshToken: crypto.randomBytes(30).toString('base64'),

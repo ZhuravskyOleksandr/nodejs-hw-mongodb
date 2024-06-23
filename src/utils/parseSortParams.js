@@ -1,4 +1,4 @@
-import { SORT_ORDER } from '../constants/sortOrder.js';
+import { SORT_ORDER } from '../constants/index.js';
 
 function parseSortBy(sortBy) {
   const keysOfStudent = [

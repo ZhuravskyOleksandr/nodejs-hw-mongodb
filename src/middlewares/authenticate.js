@@ -2,7 +2,7 @@ import createHttpError from 'http-errors';
 import { SessionsCollection } from '../db/models/Session.js';
 import { UsersCollection } from '../db/models/User.js';
 
-export async function authenticate(req, res, next) {
+export default async function authenticate(req, res, next) {
   const authHeader = req.get('Authorization');
 
   if (!authHeader) {

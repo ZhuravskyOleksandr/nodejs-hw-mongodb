@@ -1,6 +1,6 @@
 import { ContactsCollection } from '../db/models/Contact.js';
 import calculatePaginationData from '../utils/calculatePaginationData.js';
-import { SORT_ORDER } from '../constants/sortOrder.js';
+import { SORT_ORDER } from '../constants/index.js';
 
 export async function getAllContacts({
   page = 1,
@@ -52,10 +52,15 @@ export async function createContact(payload) {
   return await ContactsCollection.create(payload);
 }
 
-export async function updateContact(contactId, userId, payload, options = {}) {
+export async function updateContact(
+  contactId,
+  userId,
+  { photo, ...payload },
+  options = {},
+) {
   const rawResult = await ContactsCollection.findOneAndUpdate(
     { _id: contactId, userId },
-    payload,
+    { photo, ...payload },
     {
       new: true,
       includeResultMetadata: true,

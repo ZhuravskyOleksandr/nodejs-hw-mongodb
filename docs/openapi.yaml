@@ -12,7 +12,7 @@ tags:
     description: Operations about contacts.
 servers:
   - url: <http://localhost:3000>
-  # - url: #посилання на задеплоєний сайт
+  - url: <https://contacts-service-app.onrender.com>
 paths:
   /contacts:
     get:

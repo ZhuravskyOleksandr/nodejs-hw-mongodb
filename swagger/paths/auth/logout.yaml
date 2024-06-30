@@ -1,0 +1,10 @@
+tags:
+  - Auth
+summary: Log out user
+operationId: logoutUser
+description: 'Log out of your account'
+security:
+  - bearerAuth: []
+responses:
+  '204':
+    description: 'Successfuly log out'
